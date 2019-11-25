@@ -22,5 +22,9 @@ class Map:
         if self.InMap(key):
             return self.m[key]
         return self.default
+    
+# wanted something similar to an empty interface obj in go
+def EmptyInterface():
+    return type('', (), {})()
         
         
