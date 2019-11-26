@@ -90,9 +90,13 @@ def parseTabB(string):
 
 # Tab Type C is for tab count 4 (items)
 def parseTabC(string):
-    if utilParse.findSubstring(string,"nil") == -1:
+    if utilParse.findSubstring(string,"nil") != -1:
         return -1,0
     return grabItemData(string)
+
+class WhiteList:
+    def __init__(self, server, characterList):
+        
 
 class Parser:
     def __init__(self):
@@ -141,6 +145,18 @@ class Parser:
                 
     
 
-#%%
+"""
+fc = getFileContent("BagBrother.LUA")
+lines = linesToRopeList(fc)
+x = ""
+for i in lines:
+    if i.type == 4:
+        x = i.string
+        break
+
+y,z = parseTabC(x)
+
 p = [Parser()]
 p[0].Parse("BagBrother.LUA")
+
+"""
