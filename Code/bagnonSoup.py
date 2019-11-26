@@ -86,6 +86,8 @@ def parseTabA(string):
 def parseTabB(string):
     if utilParse.findSubstring(string, "money") == -1:
         return -1
+    if utilParse.findSubstring(string, "equip") == -1:
+        return -2                      #* BUGFIX FOR EQUIPPED ITEMS
     return grabMoney(string)
 
 # Tab Type C is for tab count 4 (items)
@@ -94,9 +96,10 @@ def parseTabC(string):
         return -1,0
     return grabItemData(string)
 
+"""
 class WhiteList:
     def __init__(self, server, characterList):
-        
+"""        
 
 class Parser:
     def __init__(self):
@@ -109,6 +112,8 @@ class Parser:
                 3:self.handleTabThree,
                 4:self.handleTabFour
                 }
+        self.ignoreEquipped = False
+        # is flipped to true when evaluating equipped items
     def closeServerInFocus(self):
         self.servers.append(self.serverInFocus)
     def closeCharacterInFocus(self):
@@ -133,8 +138,12 @@ class Parser:
         potentialVal = parseTabB(string)
         if potentialVal == -1:
             return
+        if potentialVal == -2:
+            self.ignoreEquipped = True #* BUGFIX FOR EQUIPPED ITEMS
         self.characterInFocus.SetGold(potentialVal)
     def handleTabFour(self, string):
+        if self.ignoreEquipped:
+            return                     #* BUGFIX FOR EQUIPPED ITEMS
         itemID, quantity = parseTabC(string)
         if itemID != -1:
             self.characterInFocus.AddToItemCount(itemID,quantity)
@@ -142,21 +151,9 @@ class Parser:
         ropeList = linesToRopeList(getFileContent(FilePath))
         for rope in ropeList:
             self.handler[rope.type](rope.string)
-                
-    
 
 """
-fc = getFileContent("BagBrother.LUA")
-lines = linesToRopeList(fc)
-x = ""
-for i in lines:
-    if i.type == 4:
-        x = i.string
-        break
-
-y,z = parseTabC(x)
-
 p = [Parser()]
 p[0].Parse("BagBrother.LUA")
-
 """
+
