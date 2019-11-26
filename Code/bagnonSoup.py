@@ -4,6 +4,7 @@ import utilFile
 import utilParse
 import utilMap
 import logger
+from time import time as getTime
 
 
 # gets file content from a bagbrother file
@@ -46,6 +47,12 @@ class Character:
         return self.name
     def SetGold(self,Val):
         self.gold = int(Val)
+    def getItemList(self):
+        return self.items.ListKeys()
+    def getItemCt(self,ID):
+        return self.items.Get(ID)
+    def getGold(self):
+        return self.gold
         
 class rope:
     def __init__(self, string):
@@ -107,6 +114,34 @@ class WhiteList:
         if self.characters.InMap(char):
             return True
         return False
+
+class subParser:
+    def __init__(self):
+        self.totalGold = 0
+        self.items = utilMap.Map(0)
+    def addToItemCt(self,ID,ct):
+        self.items.Set(ID,self.items.Get(ID)+ct)
+    def addToGold(self,val):
+        self.totalGold += val
+    def parseCharacter(self, char):
+        self.addToGold(char.getGold())
+        itemIDs = char.getItemList()
+        for ID in itemIDs:
+            self.addToItemCt(ID,char.getItemCt(ID))
+    def parseCharacterList(self, charList):
+        for char in charList:
+            self.parseCharacter(char)
+        return self.items, self.toGoldEntry()
+    def toCsvLine(self, ID):
+        return "\n"+str(ID)+"," +str(self.items.Get(ID))
+    def toCsvBlob(self):
+        blob = "ItemID,Ct"
+        for ID in self.items.ListKeys():
+            blob += self.toCsvLine(ID)
+        return blob
+    def toGoldEntry(self):
+        t = str(getTime())
+        return t + "," + str(self.totalGold)
 
 class Parser:
     def __init__(self):
@@ -182,18 +217,15 @@ class Parser:
     def getWhiteListedCharacters(self,whitelist):
         server = self.getServer(whitelist)
         return self.getCharacters(server, whitelist)
+    # returns dictionary and goldCsvEntry
     def Parse(self,FilePath, whitelist):
         ropeList = linesToRopeList(getFileContent(FilePath))
         for rope in ropeList:
             self.handler[rope.type](rope.string)
+        subparser = subParser()
+        return subparser.parseCharacterList(self.getWhiteListedCharacters(whitelist))
 
-"""
-p = [Parser()]
-wl = WhiteList("Kirtonos",["Hilroyclntan","Goldmangear"])
 
-p[0].Parse("BagBrother.LUA",wl)
-List = p[0].getWhiteListedCharacters(wl)
- 
-"""
+        
 
 
