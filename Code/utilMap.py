@@ -9,7 +9,9 @@ class Map:
     def InMap(self,key):
         if key in self.m.keys():
             return True
-    def SetOrAdd(self, key, value):
+    def Set(self, key, value):
+        self.m[key] = value
+    def Add(self, key, value):
         self.m[key] = value
     def Del(self,key):
         if self.InMap(key):
@@ -26,5 +28,3 @@ class Map:
 # wanted something similar to an empty interface obj in go
 def EmptyInterface():
     return type('', (), {})()
-        
-        
