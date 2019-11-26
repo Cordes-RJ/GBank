@@ -45,7 +45,7 @@ class Character:
     def GetName(self):
         return self.name
     def SetGold(self,Val):
-        self.gold = Val
+        self.gold = int(Val)
         
 class rope:
     def __init__(self, string):
@@ -62,7 +62,7 @@ def scrapeFromBrackets(string):
     return utilParse.findStrangeDatum(string,"[\"", "\"]")
 
 def grabMoney(string):
-    return utilParse.findStrangeDatum(string," ", ",")
+    return utilParse.findStrangeDatum(string,"= ", ",")
 
 def grabItemData(string):
     itemID = utilParse.findStrangeDatum(string,"\"",":")
@@ -84,11 +84,13 @@ def parseTabA(string):
 
 # Tab Type B is for tab count 3 (attributes like faction and money)
 def parseTabB(string):
-    if utilParse.findSubstring(string, "money") == -1:
-        return -1
-    if utilParse.findSubstring(string, "equip") == -1:
+    if utilParse.findSubstring(string,"money") >= 0:
+        return grabMoney(string)
+    if utilParse.findSubstring(string, "equip") >= 0:
         return -2                      #* BUGFIX FOR EQUIPPED ITEMS
-    return grabMoney(string)
+    if utilParse.findSubstring(string, "}") >= 0:
+        return -3                      #* BUGFIX FOR EQUIPPED ITEMS
+    return -1 # general failure to find money
 
 # Tab Type C is for tab count 4 (items)
 def parseTabC(string):
@@ -96,10 +98,15 @@ def parseTabC(string):
         return -1,0
     return grabItemData(string)
 
-"""
+
 class WhiteList:
-    def __init__(self, server, characterList):
-"""        
+    def __init__(self, server, charList):
+        self.server = server
+        self.characters = utilMap.CreateMapofEmptyInterfaces(charList)
+    def Check(self,char):
+        if self.characters.InMap(char):
+            return True
+        return False
 
 class Parser:
     def __init__(self):
@@ -135,11 +142,23 @@ class Parser:
         else:
             self.setNewCharacterInFocus(potentialChar)
     def handleTabThree(self,string):
+        #print("handling tabThree String:", string)
         potentialVal = parseTabB(string)
         if potentialVal == -1:
-            return
+            #print("skipping")
+            return # skip
         if potentialVal == -2:
             self.ignoreEquipped = True #* BUGFIX FOR EQUIPPED ITEMS
+            #print("setting ignore on:")
+            return
+        if potentialVal == -3 and self.ignoreEquipped:
+            self.ignoreEquipped = False #* BUGFIX FOR EQUIPPED ITEMS
+            #print("setting ignore off:")
+            return
+        if potentialVal == -3:
+            #print("skipping")
+            return
+        #print("setting value:", potentialVal)
         self.characterInFocus.SetGold(potentialVal)
     def handleTabFour(self, string):
         if self.ignoreEquipped:
@@ -147,13 +166,34 @@ class Parser:
         itemID, quantity = parseTabC(string)
         if itemID != -1:
             self.characterInFocus.AddToItemCount(itemID,quantity)
-    def Parse(self,FilePath):
+    def getServer(self,whitelist):
+        for server in self.servers:
+            if server.name == whitelist.server:
+                return server
+        logger.Log("BagnonSoup","Parser|getServer","Critical","Server Not Found", LogAndKill=True)
+    def getCharacters(self,server, whitelist):
+        newCharList = []
+        for char in server.characters:
+            if whitelist.Check(char.name):
+                newCharList.append(char)
+        if len(newCharList) == 0:
+            logger.Log("BagnonSoup","Parser|getChars","Critical","No Characters Found", LogAndKill=True)
+        return newCharList
+    def getWhiteListedCharacters(self,whitelist):
+        server = self.getServer(whitelist)
+        return self.getCharacters(server, whitelist)
+    def Parse(self,FilePath, whitelist):
         ropeList = linesToRopeList(getFileContent(FilePath))
         for rope in ropeList:
             self.handler[rope.type](rope.string)
 
 """
 p = [Parser()]
-p[0].Parse("BagBrother.LUA")
+wl = WhiteList("Kirtonos",["Hilroyclntan","Goldmangear"])
+
+p[0].Parse("BagBrother.LUA",wl)
+List = p[0].getWhiteListedCharacters(wl)
+ 
 """
+
 
