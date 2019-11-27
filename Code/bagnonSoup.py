@@ -131,7 +131,7 @@ class subParser:
     def parseCharacterList(self, charList):
         for char in charList:
             self.parseCharacter(char)
-        return self.items, self.toGoldEntry()
+        return self.items.DeepCopy(), self.toGoldEntry()
     def toCsvLine(self, ID):
         return "\n"+str(ID)+"," +str(self.items.Get(ID))
     def toCsvBlob(self):
@@ -226,6 +226,6 @@ class Parser:
         return subparser.parseCharacterList(self.getWhiteListedCharacters(whitelist))
 
 
-        
+    
 
 
