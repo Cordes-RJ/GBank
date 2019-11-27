@@ -26,7 +26,7 @@ class Map:
         return self.default
     def DeepCopy(self):
         m = Map(self.default)
-        List = self.ListKeys
+        List = self.ListKeys()
         for key in List:
             m.Add(key,self.Get(key))
         return m
