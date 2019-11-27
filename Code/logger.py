@@ -35,7 +35,7 @@ def Start(**kwargs):
     # settle for standard local log
     if setNewLogFileAt('log.csv'):
         if note: # if note is set to True, log warning about custom log failure  
-            Log("logger","Start","Warning","Custom log failed to init")
+            Log("logger","Start","Warning","Custom log failed to init-logging in local logcsv")
         return
     else:
         # was unable to create file in local directory
