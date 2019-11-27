@@ -5,7 +5,7 @@ import utilParse
 from datetime import datetime
 
 
-class timer:
+class StopWatch:
     def __init__(self):
         self.time = time.time()
     def stop(self):
