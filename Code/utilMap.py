@@ -9,6 +9,7 @@ class Map:
     def InMap(self,key):
         if key in self.m.keys():
             return True
+        return False
     def Set(self, key, value):
         self.m[key] = value
     def Add(self, key, value):
