@@ -118,6 +118,28 @@ def findStrangeDatum(string,startDelimit,endDelimit, **kwargs):
         return ""
     return string[a:b]
 
+def findAllCharacters(string,char, **kwargs):
+    if len(string) < len(char):
+        return ""
+    if len(string) == 0 or len(char) == 0:
+        return ""
+    if len(char) > 1:
+        return findAllSubstrings(string, char)
+    start = 0
+    end = len(string)
+    if "startIndexAt" in kwargs.keys():
+        start = kwargs["startIndexAt"]
+    if "endIndexAt" in kwargs.keys():
+        end = kwargs["endIndexAt"]
+    foundList = []
+    bytesArray, byteChar = convertToBytes(string), convertToBytes(char)[0]
+    for i in range(start,end):
+        if bytesArray[i] == byteChar:
+            foundList.append(i)
+    return foundList
+            
+    
+
 def findAllSubstrings(string, substring, **kwargs):
     if len(string) < len(substring):
         return ""
