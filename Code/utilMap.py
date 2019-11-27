@@ -9,6 +9,7 @@ class Map:
     def InMap(self,key):
         if key in self.m.keys():
             return True
+        return False
     def Set(self, key, value):
         self.m[key] = value
     def Add(self, key, value):
@@ -24,13 +25,18 @@ class Map:
         if self.InMap(key):
             return self.m[key]
         return self.default
+    def DeepCopy(self):
+        m = Map(self.default)
+        List = self.ListKeys()
+        for key in List:
+            m.Add(key,self.Get(key))
+        return m
 
 def CreateMapofEmptyInterfaces(ListOfKeys):
     m = Map("")
     for key in ListOfKeys:
         m.Add(key,EmptyInterface())
     return m
-    
     
 # wanted something similar to an empty interface obj in go
 def EmptyInterface():
