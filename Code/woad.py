@@ -12,7 +12,6 @@ def getItemID(string):
     try:
         return int(scrapeFromBrackets(string))
     except Exception:
-        print(string)
         logger.Log("woad","getItemID","Critical","failed to parse auc-stat-simple line, check woad and file", LogAndKill = True)
 
 def getPrice(string):
@@ -23,11 +22,9 @@ def getPrice(string):
             foundEnd = utilParse.findCharacter(string,"\"",startIndexAt=List[1])
             price = int(string[List[1]+1:foundEnd])
         elif len(List)== 3:
-            print(string)
             price = int(string[List[1]+1:List[2]])
     except Exception:
         pass
-    print(string, price, List)
     return price
 
 def getDataFromStatString(string):
@@ -140,20 +137,3 @@ class Parser:
         return itemMap
     def Parse(self,FilePath, ServerName):
         return self.grabDailyPrices(isolateDailyPrices(isolateServer(linesToRopeList(getFileContent(FilePath)),ServerName))) 
-
-"""
-----
-Lines = getFileContent("test_Auc-Stat-Simple.lua")
-A1ropes = linesToRopeList(Lines)
-A2newRopes = isolateServer(A1ropes,"Kirtonos")
-A3dailyPrices = isolateDailyPrices(A2newRopes)
-A4dict = grabDailyPrices(A3dailyPrices)
------
-woadParser = Parser()
-itemdict = woadParser.Parse("test_Auc-Stat-Simple.lua", "Kirtonos")
-x = [itemdict]
-----
-woadParser = Parser()
-itemdict = woadParser.Parse("test_Auc-Stat-Simple.lua", "Kirtonos")
-x = [itemdict]
-"""
