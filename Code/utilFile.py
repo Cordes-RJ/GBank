@@ -13,4 +13,27 @@ def Erase(path):
         
 def Create(path):
     open(path, 'a').close()
+
+# read file in as a block
+def ReadIn_lines(path):
+    Lines = []
+    try:
+        with open(path, "r",encoding = "utf8") as File:
+            Lines = File.readlines()
+            File.close()
+    except:
+        pass
+    return Lines
+
+# read in file as bloc of text
+def ReadIn_asBloc(path):
+    string = []
+    try:
+        with open(path, "r",encoding = "utf8") as File:
+            string = File.read()
+            File.close()
+    except:
+        pass
+    return string
     
+
