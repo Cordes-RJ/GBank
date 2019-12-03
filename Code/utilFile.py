@@ -39,5 +39,5 @@ def ReadIn_asBloc(path):
 def ListOfItemsToCSVRow(List):
     csvString = ""
     for i in List:
-        csvString += str(i)
-    return csvString
+        csvString += "," + str(i)
+    return csvString[1:len(csvString)]
