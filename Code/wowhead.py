@@ -1,16 +1,22 @@
 # -*- coding: utf-8 -*-
+"""
+wowhead is used to scrape data from classic.wowhead and facilitate transfer of
+the data found to other functions
+"""
+
 
 import utilParse
 import itemTypeRefCodes as refcodes
 import utilWeb
+import logger
 
 class wowheadItemInfo:
     def __init__(self):
-        self.Name = "n/a"
-        self.Link = "n/a"
+        self.Name = ""
+        self.itemID = 0
         self.Rarity = -1
         self.RefCode = 0
-        self.IconName = "n/a"
+        self.IconName = ""
 
 # a urlBuildFunc
 def makeXMLURLfromItemID(ItemID):
@@ -25,7 +31,7 @@ def parseWowHeadXML(XML):
     item = wowheadItemInfo()
     check = utilParse.findSubstring(XML,"Item not found!")
     if check == -1:
-        item.Link = makeDisplayURLfromItemID(findID(XML))
+        item.itemID = findID(XML)
         item.Name = findName(XML)
         item.RefCode = refcodes.createRefCode(findClass(XML),findSubClass(XML))
         item.IconName = findIcon(XML)
@@ -60,5 +66,13 @@ class Scraper:
     def __init__(self):
         pass
     def Scrape(self, itemList, header, timeout):
-        return utilWeb.politelyScrape(itemList,makeXMLURLfromItemID,requesterFunc,parseWowHeadXML,header,timeout)
+        List = utilWeb.politelyScrape(itemList,makeXMLURLfromItemID,requesterFunc,parseWowHeadXML,header,timeout)
+        for item in List:
+            if item.Name == "":
+                logger.Log("wowhead","scraper","warning","failed to get data for: "+str(item))
+        return List
 
+"""
+s = Scraper()
+x = s.Scrape(['13968','341'], "test",10)
+"""
