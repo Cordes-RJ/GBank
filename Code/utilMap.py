@@ -43,9 +43,9 @@ class Map:
                     return key
                 
 class TwoWayMap:
-    def __init__(self, defaultReturn):
-        self.forward = Map(defaultReturn)
-        self.back = Map(defaultReturn)
+    def __init__(self, defForward, defBack):
+        self.forward = Map(defForward)
+        self.back = Map(defBack)
     def orient(self,direction):
         if direction:
             return self.forward
