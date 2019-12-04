@@ -9,6 +9,12 @@ def removeControlCharacters(string):
             newString = newString+string[i]
     return newString
 
+def removeControlCharactersFromList(List):
+    newList = []
+    for item in List:
+        newList.append(removeControlCharacters(str(item)))
+    return newList
+
 # count characters in a string, preferred input is character as string
 # int representation of a byte will not work
 def countCharacters(string, char):
@@ -207,5 +213,9 @@ def countSubStrings(string, substring, **kwargs):
         else:
             x = False
     return foundCt
-            
 
+def DeepCopyList(List):
+    NewList = []
+    for i in List:
+        NewList.append(i)
+    return NewList

@@ -18,3 +18,6 @@ def timeToDateString(timestamp):
     if delimiter == -1:
         return str(o.date()) + " " + str(o.time())
     return str(o.date()) + " " + str(time[0:delimiter])
+
+def getDateString():
+    return timeToDateString(time.time())

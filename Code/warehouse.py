@@ -22,6 +22,7 @@ class Item:
         self.itemRefCode = 0
         self.LastPrice = 0
         self.Ct = 0
+        self.totalMrktVal = 0
     def INITviaDFrow(self,dfRow):
         self.itemID = dfRow['itemID']
         self.Name = (dfRow['Name']).encode('utf-8')
@@ -37,13 +38,15 @@ class Item:
         typeAndSubtype = itemRef.getStringFromRefCode(self.itemRefCode)
         iconName = self.IconName.decode('utf-8')
         link = wowhead.makeDisplayURLfromItemID(self.itemID)
-        attList = [self.itemID,name,link,self.Rarity,iconName,typeAndSubtype,self.LastPrice,self.Ct,self.ct * self.LastPrice]
+        attList = [self.itemID,name,link,self.Rarity,iconName,typeAndSubtype,self.LastPrice,self.Ct,self.totalMrktVal]
         return utilFile.ListOfItemsToCSVRow(attList)
     def INITviaID(self, itemID):
         self.itemID = itemID
         return self
+    def INITviaIDandCt(self,itemID,ct):
+        self.itemID,self.Ct = itemID, ct
+        return self
     def UpdateWoWheadInfo(self, winfo):
-        winfo = wowhead.wowheadItemInfo()
         self.Name = (winfo.Name).encode('utf-8')
         self.Rarity = winfo.Rarity
         self.itemRefCode = winfo.RefCode
@@ -52,6 +55,11 @@ class Item:
         self.LastPrice = price
     def UpdateCt(self,ct):
         self.Ct = ct
+    def CalculateTotalMrktVal(self):
+        self.totalMrktVal = self.Ct * self.LastPrice
+    def CalcAndGetmarketValue(self):
+        self.CalculateTotalMrktVal()
+        return self.totalMrktVal
         
 
 # take raw CSV path and return Pandas dataframe

@@ -8,8 +8,8 @@ def getFileContent(path):
     Lines = utilFile.ReadIn_lines(path)
     if len(Lines) <= 0:
         # for readability
-        errMessage = "Error getting manualAdd file|check parameters"
-        logger.Log("manualAdd","getFileContent","Critical", errMessage, LogAndKill = True)
+        errMessage = "Got blank return from ManualAdd"
+        logger.Log("manualAdd","getFileContent","Note", errMessage)
         # exit program
     return Lines
 
@@ -28,11 +28,23 @@ def addLinestoItemMap(lines, anItemMap):
         logger.Log("manualAdd","addLines","Critical", errMessage, LogAndKill = True)
 
 # assumes input of a map[itemID]:ct, adds each itemID string to a item dict
-class Parser:
+class ParserOld:
     def __init__(self):
         pass
     def Parse(self,FilePath,ItemMap):
         return addLinestoItemMap(getFileContent(FilePath),ItemMap)
+
+# just returns itemList
+class Parser:
+    def __init__(self):
+        pass
+    def Parse(self,FilePath):
+        Lines = getFileContent(FilePath)
+        # clean lines and replace with integers
+        for idx in range(len(Lines)):
+            Lines[idx] = int(utilParse.removeControlCharacters(Lines[idx]))
+        return Lines
+    
         
 """
 Remember, map arguments are passed as pointers, the variable doesn't need to
