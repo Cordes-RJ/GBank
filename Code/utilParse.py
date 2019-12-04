@@ -213,5 +213,9 @@ def countSubStrings(string, substring, **kwargs):
         else:
             x = False
     return foundCt
-            
 
+def DeepCopyList(List):
+    NewList = []
+    for i in List:
+        NewList.append(i)
+    return NewList
