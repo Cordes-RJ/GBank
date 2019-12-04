@@ -10,8 +10,8 @@ class StopWatch:
         self.time = time.time()
     def stop(self):
         return time.time() - self.time
-    def getTime(self):
-        return time.time() - self.time
+    def getTimeString(self, roundTo):
+        return str(round(time.time() - self.time,4)) + " seconds"
     
 def timeToDateString(timestamp):
     o = datetime.fromtimestamp(timestamp)
