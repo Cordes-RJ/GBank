@@ -34,9 +34,9 @@ class Ledgerman:
     def GetCharacters(self):
         return self.characterWL
     def BuildDrivePath(self,file):
-        return self.params['DriveGBankPath']+"\\"+file
+        return self.params.Get('DriveGBankPath')+"\\"+file
     def BuildSavedVarPath(self,file):
-        return self.params['SavedVariablesPath']+"\\"+file
+        return self.params.Get('SavedVariablesPath')+"\\"+file
     def GetWarehousePath(self):
         return self.BuildDrivePath("warehouse.csv")
     def GetVaultPath(self):
