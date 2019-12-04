@@ -11,7 +11,7 @@ class StopWatch:
     def stop(self):
         return time.time() - self.time
     def getTimeString(self, roundTo):
-        return str(round(time.time() - self.time,4)) + " seconds"
+        return str(round(time.time() - self.time,roundTo)) + " seconds"
     
 def timeToDateString(timestamp):
     o = datetime.fromtimestamp(timestamp)
