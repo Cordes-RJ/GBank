@@ -30,7 +30,7 @@ class Ledgerman:
     def __init__(self):
         self.params, self.characterWL = getFileContent("parameters.csv","characterWhiteList.csv")
     def GetServerName(self):
-        return self.params['ServerName']
+        return self.params.Get('ServerName')
     def GetCharacters(self):
         return self.characterWL
     def BuildDrivePath(self,file):
