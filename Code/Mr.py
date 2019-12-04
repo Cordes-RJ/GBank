@@ -24,7 +24,8 @@ class Manager:
         return atomicity.Check(self.paramLedger)
     # BagUpdate grabs items from bagbrother and updates the ledger
     def BagUpdate(self):
-        return bagnonSoup.Parser().Parse(self.paramLedger.GetBagPath(),self.paramLedger.characterWL)
+        whiteList = bagnonSoup.WhiteList(self.paramLedger.GetServerName(),self.paramLedger.GetCharacters())
+        return bagnonSoup.Parser().Parse(self.paramLedger.GetBagPath(),whiteList)
 
 #%%
-#x = [Manager().BagUpdate()]
+x = [Manager().BagUpdate()]
