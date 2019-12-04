@@ -8,8 +8,8 @@ def getFileContent(path):
     Lines = utilFile.ReadIn_lines(path)
     if len(Lines) <= 0:
         # for readability
-        errMessage = "Error getting manualAdd file|check parameters"
-        logger.Log("manualAdd","getFileContent","Critical", errMessage, LogAndKill = True)
+        errMessage = "Got blank return from ManualAdd"
+        logger.Log("manualAdd","getFileContent","Note", errMessage)
         # exit program
     return Lines
 
