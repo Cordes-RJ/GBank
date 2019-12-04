@@ -8,6 +8,7 @@ import parameters
 import atomicity
 import warehouse
 import bagnonSoup
+import manualAdd
 
 class Manager:
     def __init__(self):
@@ -35,11 +36,17 @@ class Manager:
                 self.warehouseLedger.Get(itemID).UpdateCt(foundInBag.Get(itemID))
             else:
                 self.warehouseLedger.Add(itemID,warehouse.Item().INITviaIDandCt(itemID,foundInBag.Get(itemID)))
-
+    # Manual Add update grabs items from manualAdd file and adds them to ledger
+    def ManualAddUpdate(self):
+        IDlist = manualAdd.Parser().Parse(self.paramLedger.GetManualAddPath())
+        for itemID in IDlist:
+            if not self.warehouseLedger.InMap(itemID):
+                self.warehouseLedger.Add(itemID,warehouse.Item().INITviaID(itemID))
+                
 #%%
 x = [Manager()]
 #%%
-x[0].BagUpdate()
+x[0].ManualAddUpdate()
 
 #%%
                 
