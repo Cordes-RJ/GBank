@@ -38,6 +38,11 @@ class Ledgerman:
         return self.params.Get('ScrapeHeader')
     def GetScrapeTimeout(self):
         return int(self.params.Get('ScrapeTimeOut'))
+    def GetPrintToggle(self):
+        toggle = self.params.Get('Print')
+        if toggle == "True":
+            return True
+        return False
     def BuildDrivePath(self,file):
         return self.params.Get('DriveGBankPath')+"\\"+file
     def BuildSavedVarPath(self,file):

@@ -4,3 +4,4 @@ SavedVariablesPath,C:\Program Files (x86)\World of Warcraft\_classic_\WTF\Accoun
 ServerName,Kirtonos
 ScrapeHeader,Meaningless guildbank project|https://github.com/Cordes-RJ/GBank|built to be polite|if this bothers you please contact me at richardj.cordes@gmail.com
 ScrapeTimeOut,2
+Print,True
