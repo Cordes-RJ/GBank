@@ -25,6 +25,7 @@ def buildFromParameterStrings(ParameterStrings):
         Map.Add(i2['Parameter'],i2['Value'])
     return Map
 
+# Ledgerman keeps account of parameters and character whitelist
 class Ledgerman:
     def __init__(self):
         self.params, self.characterWL = getFileContent("parameters.csv","characterWhiteList.csv")
@@ -32,7 +33,18 @@ class Ledgerman:
         return self.params['ServerName']
     def GetCharacters(self):
         return self.characterWL
+    def BuildDrivePath(self,file):
+        return self.params['DriveGBankPath']+"\\"+file
+    def BuildSavedVarPath(self,file):
+        return self.params['SavedVariablesPath']+"\\"+file
     def GetWarehousePath(self):
-        return self.params['DriveGBankPath']+"\\"+"warehouse.csv"
-    
+        return self.BuildDrivePath("warehouse.csv")
+    def GetVaultPath(self):
+        return self.BuildDrivePath("vault.csv")
+    def GetManualAddPath(self):
+        return self.BuildDrivePath("manualAdd.csv")
+    def GetBagPath(self):
+        return self.BuildSavedVarPath("BagBrother.LUA")
+    def GetAuctionDataPath(self):
+        return self.BuildSavedVarPath("Auc-Stat-Simple.LUA")
 
