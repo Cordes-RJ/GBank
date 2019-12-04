@@ -19,24 +19,33 @@ import utilParse
 
 class Manager:
     def __init__(self):
+        self.Timer = utilTime.StopWatch()
         self.GoldFound = 0                                                      # needed later
         self.TotalCommoditiesValue = 0                                          # needed later
         logger.Start()                                                          # begin Logging
         # instantiate parameters
-        self.paramLedger = parameters.Ledgerman()                               # instantiate parameters
+        self.paramLedger = parameters.Ledgerman()                              # instantiate parameters
+        self.PrintToggle = self.paramLedger.GetPrintToggle()
+        self.PrintUpdate("StartUp","File Check")
         # ensure necessary files are available before continuing
         if self.AtomicityCheck():                                               # for readability
             pass
+        self.PrintUpdate("File Check","Warehouse Construction")
         # build warehouse ledger
         self.warehouseLedger = warehouse.Build(self.paramLedger.GetWarehousePath())
+        self.PrintUpdate("Warehouse Construction","Bag Scrape")
         # update for bag contents with new counts
         self.BagUpdate()
+        self.PrintUpdate("Bag Scrape","Scrape for manually added items")
         # add itemIDs from manualAdd
         self.ManualAddUpdate()
+        self.PrintUpdate("Scrape for manually added items","Auction Data Scrape")
         # do a price check on whitelisted items
         self.PriceCheck()
+        self.PrintUpdate("Auction Data Scrape", "Wowhead Scrape")
         # scrape WowheadInfo
         self.WowHeadScrape()
+        self.PrintUpdate("Wowhead Scrape", "File Update Preparation")
         # Prepare file contents
         self.CalculateMarketValue()
         VaultEntry = self.CreateVaultEntry()
@@ -44,9 +53,18 @@ class Manager:
         # check again to ensure the files are available
         if self.AtomicityCheck():                                               # for readability
             pass
+        self.PrintUpdate("File Update Preparation", "Writing to GBank")
         self.WriteVaultEntry(VaultEntry)
         self.WriteWarehouseFile(Ledger)
         self.ClearManualAdd()
+        self.PrintUpdate("Writing to GBank", "To prepare for closure")
+        self.PrintFinal()
+    def PrintUpdate(self,LastStage,CurrentStage):
+        if self.PrintToggle:
+            print("Completed " + LastStage + " after " + self.Timer.getLapTimeString(5) + ".\nStarting " + CurrentStage + "...")
+    def PrintFinal(self):
+        if self.PrintToggle:
+            print("Finished update after " + self.Timer.getFullTimeString(5))
     def AtomicityCheck(self):
         return atomicity.Check(self.paramLedger)
     # BagUpdate grabs items from bagbrother and updates the ledger
