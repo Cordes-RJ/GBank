@@ -46,7 +46,6 @@ class Item:
         self.itemID,self.Ct = itemID, ct
         return self
     def UpdateWoWheadInfo(self, winfo):
-        winfo = wowhead.wowheadItemInfo()
         self.Name = (winfo.Name).encode('utf-8')
         self.Rarity = winfo.Rarity
         self.itemRefCode = winfo.RefCode
