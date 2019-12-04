@@ -34,6 +34,8 @@ class Ledgerman:
         return self.params.Get('ServerName')
     def GetCharacters(self):
         return self.characterWL
+    def GetScrapeHeader(self):
+        return self.params.Get('ScrapeHeader')
     def BuildDrivePath(self,file):
         return self.params.Get('DriveGBankPath')+"\\"+file
     def BuildSavedVarPath(self,file):
