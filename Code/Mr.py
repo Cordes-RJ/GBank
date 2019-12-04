@@ -11,6 +11,7 @@ import bagnonSoup
 
 class Manager:
     def __init__(self):
+        self.GoldFound = 0                                                      # needed for later
         logger.Start()                                                          # begin Logging
         # instantiate parameters
         self.paramLedger = parameters.Ledgerman()                               # instantiate parameters
@@ -20,12 +21,26 @@ class Manager:
         # build warehouse ledger
         self.warehouseLedger = warehouse.Build(self.paramLedger.GetWarehousePath())
         # update for bag contents with new counts
+        self.BagUpdate()
+        # add itemIDs from manualAdd
+        
     def AtomicityCheck(self):
         return atomicity.Check(self.paramLedger)
     # BagUpdate grabs items from bagbrother and updates the ledger
     def BagUpdate(self):
         whiteList = bagnonSoup.WhiteList(self.paramLedger.GetServerName(),self.paramLedger.GetCharacters())
-        return bagnonSoup.Parser().Parse(self.paramLedger.GetBagPath(),whiteList)
+        foundInBag, self.GoldFound = bagnonSoup.Parser().Parse(self.paramLedger.GetBagPath(),whiteList)
+        for itemID in foundInBag.ListKeys():
+            if self.warehouseLedger.InMap(itemID):
+                self.warehouseLedger.Get(itemID).UpdateCt(foundInBag.Get(itemID))
+            else:
+                self.warehouseLedger.Add(itemID,warehouse.Item().INITviaIDandCt(itemID,foundInBag.Get(itemID)))
 
 #%%
+x = [Manager()]
+#%%
+x[0].BagUpdate()
+
+#%%
+                
 x = [Manager().BagUpdate()]
