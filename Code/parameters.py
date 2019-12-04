@@ -36,6 +36,8 @@ class Ledgerman:
         return self.characterWL
     def GetScrapeHeader(self):
         return self.params.Get('ScrapeHeader')
+    def GetScrapeTimeout(self):
+        return int(self.params.Get('ScrapeTimeOut'))
     def BuildDrivePath(self,file):
         return self.params.Get('DriveGBankPath')+"\\"+file
     def BuildSavedVarPath(self,file):
