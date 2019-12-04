@@ -42,6 +42,9 @@ class Item:
     def INITviaID(self, itemID):
         self.itemID = itemID
         return self
+    def INITviaIDandCt(self,itemID,ct):
+        self.itemID,self.Ct = itemID, ct
+        return self
     def UpdateWoWheadInfo(self, winfo):
         winfo = wowhead.wowheadItemInfo()
         self.Name = (winfo.Name).encode('utf-8')
