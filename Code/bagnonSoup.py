@@ -224,8 +224,3 @@ class Parser:
             self.handler[rope.type](rope.string)
         subparser = subParser()
         return subparser.parseCharacterList(self.getWhiteListedCharacters(whitelist))
-
-
-    
-
-

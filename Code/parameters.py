@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import utilFile
 import utilMap
+import utilParse
 import logger
 import pandas as pd
 
@@ -11,7 +12,7 @@ def getFileContent(parameterPath,characterListpath):
         errMessage = "Error getting parameters file|check parameters"
         logger.Log("parameters","getFileContent","Critical", errMessage, LogAndKill = True)
         # exit program
-    characters = utilFile.ReadIn_lines(characterListpath)
+    characters = utilParse.removeControlCharactersFromList(utilFile.ReadIn_lines(characterListpath))
     if len(characters) <= 0:
         # for readability
         errMessage = "Error getting characters file|check character white list"
@@ -22,7 +23,7 @@ def getFileContent(parameterPath,characterListpath):
 def buildFromParameterStrings(ParameterStrings):
     Map = utilMap.Map(-1)
     for i,i2 in ParameterStrings.iterrows():
-        Map.Add(i2['Parameter'],i2['Value'])
+        Map.Add(i2['Parameter'],utilParse.removeControlCharacters(i2['Value']))
     return Map
 
 # Ledgerman keeps account of parameters and character whitelist
