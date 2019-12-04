@@ -47,4 +47,18 @@ class Ledgerman:
         return self.BuildSavedVarPath("BagBrother.LUA")
     def GetAuctionDataPath(self):
         return self.BuildSavedVarPath("Auc-Stat-Simple.LUA")
+    def GETALLPATHS(self):
+        List = []
+        # No need to check local directory, if we didn't find them we can't
+        # get here.
+        # Saved Variables paths
+        List.append([])
+        List[0].append(self.GetBagPath())
+        List[0].append(self.GetAuctionDataPath())
+        # Drive Gbank data paths
+        List.append([])
+        List[1].append(self.GetManualAddPath())
+        List[1].append(self.GetWarehousePath())
+        List[1].append(self.GetVaultPath())
+        return List
 
