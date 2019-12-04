@@ -56,7 +56,7 @@ class Item:
     def UpdateCt(self,ct):
         self.Ct = ct
     def CalculateTotalMrktVal(self):
-        self.totalMrktVal = self.Ct + self.LastPrice
+        self.totalMrktVal = self.Ct * self.LastPrice
     def CalcAndGetmarketValue(self):
         self.CalculateTotalMrktVal()
         return self.totalMrktVal
