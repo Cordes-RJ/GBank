@@ -27,6 +27,7 @@ itemRefs = [
         [100,'Consumables,Misc'],
         [101,'Consumables,Potions'],
         [102,'Consumables,Elixirs'],
+        [103,'Consumables,Flasks'],
         [104,'Consumables,Scrolls'],
         [105,'Consumables,Food & Drinks'],
         [106,'Consumables,Item Enhancements (Permanent)'],
