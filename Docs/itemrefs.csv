@@ -3,6 +3,7 @@ refCode,main id,sub id,main type,sub type,string
 100,0,0,Consumables,Misc,"[100,'Consumables,Misc'],"
 101,0,1,Consumables,Potions,"[101,'Consumables,Potions'],"
 102,0,2,Consumables,Elixirs,"[102,'Consumables,Elixirs'],"
+103,0,3,Consumables,Flasks,"[103,'Consumables,Flasks'],"
 104,0,4,Consumables,Scrolls,"[104,'Consumables,Scrolls'],"
 105,0,5,Consumables,Food & Drinks,"[105,'Consumables,Food & Drinks'],"
 106,0,6,Consumables,Item Enhancements (Permanent),"[106,'Consumables,Item Enhancements (Permanent)'],"
