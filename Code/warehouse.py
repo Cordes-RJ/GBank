@@ -6,7 +6,7 @@ import utilFile
 import itemTypeRefCodes as itemRef
 import logger
 import wowhead
-
+import currency
 
 
 
@@ -52,11 +52,11 @@ class Item:
         self.itemRefCode = winfo.RefCode
         self.IconName = (winfo.IconName).encode('utf-8')
     def UpdatePrice(self, price):
-        self.LastPrice = price
+        self.LastPrice = currency.GoldFloat(price)
     def UpdateCt(self,ct):
         self.Ct = ct
     def CalculateTotalMrktVal(self):
-        self.totalMrktVal = self.Ct * self.LastPrice
+        self.totalMrktVal = round(self.Ct * self.LastPrice,4)
     def CalcAndGetmarketValue(self):
         self.CalculateTotalMrktVal()
         return self.totalMrktVal
