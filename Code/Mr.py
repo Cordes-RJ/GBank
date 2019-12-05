@@ -16,6 +16,7 @@ import wowhead
 import utilTime
 import utilFile
 import utilParse
+import currency
 
 class Manager:
     def __init__(self):
@@ -87,7 +88,7 @@ class Manager:
         priceList = woad.Parser(IDwhiteList).Parse(self.paramLedger.GetAuctionDataPath(),self.paramLedger.GetServerName())
         for itemID in priceList.ListKeys():
             if self.warehouseLedger.InMap(itemID):
-                self.warehouseLedger.m[itemID].LastPrice = priceList.Get(itemID)
+                self.warehouseLedger.m[itemID].UpdatePrice(priceList.Get(itemID))
     def WowHeadScrape(self):
         header = self.paramLedger.GetScrapeHeader()
         timeout = self.paramLedger.GetScrapeTimeout()
@@ -103,14 +104,17 @@ class Manager:
         for itemID in self.warehouseLedger.ListKeys():
             self.TotalCommoditiesValue += self.warehouseLedger.m[itemID].CalcAndGetmarketValue()
     def CreateVaultEntry(self):
+        self.GoldFound = currency.GoldFloat(self.GoldFound)
         List = [utilTime.getDateString(),self.GoldFound+self.TotalCommoditiesValue,self.GoldFound,self.TotalCommoditiesValue]
         return utilFile.ListOfItemsToCSVRow(List)
     def LedgerToCsvBlob(self):
-        Blob = "itemID,Name,Link,Rarity,IconName,Type,Subtype,LastPrice,Ct,MrktVal"
+        Blob = "index,itemID,Name,Link,Rarity,IconName,Type,Subtype,LastPrice,Ct,MrktVal"
         itemIDs = utilParse.DeepCopyList(self.warehouseLedger.ListKeys())
+        currentIdx = 0
         for itemID in itemIDs:
-            Blob += "\n" + self.warehouseLedger.m[itemID].ToCSVrow()
+            Blob += "\n" + self.warehouseLedger.m[itemID].ToCSVrow(currentIdx)
             self.warehouseLedger.Del(itemID)
+            currentIdx += 1
         return Blob
     def WriteVaultEntry(self, VaultEntry):
         try:
