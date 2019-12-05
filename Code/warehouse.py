@@ -33,12 +33,12 @@ class Item:
         self.Ct = 0
         self.new = False # was found in a previous update
         return self
-    def ToCSVrow(self):
+    def ToCSVrow(self,CurrentIdx):
         name = self.Name.decode('utf-8')
         typeAndSubtype = itemRef.getStringFromRefCode(self.itemRefCode)
         iconName = self.IconName.decode('utf-8')
         link = wowhead.makeDisplayURLfromItemID(self.itemID)
-        attList = [self.itemID,name,link,self.Rarity,iconName,typeAndSubtype,self.LastPrice,self.Ct,self.totalMrktVal]
+        attList = [CurrentIdx,self.itemID,name,link,self.Rarity,iconName,typeAndSubtype,self.LastPrice,self.Ct,self.totalMrktVal]
         return utilFile.ListOfItemsToCSVRow(attList)
     def INITviaID(self, itemID):
         self.itemID = itemID
