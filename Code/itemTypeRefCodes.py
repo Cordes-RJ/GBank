@@ -94,7 +94,8 @@ itemRefs = [
         [1603,'Miscellaneous,Holiday'],
         [1604,'Miscellaneous,Other (Miscellaneous)'],
         [1605,'Miscellaneous,Mounts'],
-        [3000,'Trade Goods,Gemstones'], #custom
+        [3000,'Trade Goods,Gemstone'], #custom
+        [3001,'Consumables,Bandage'], #custom
         [0,'unmapped,unmapped']
         ]
 
