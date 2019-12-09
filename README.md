@@ -3,7 +3,7 @@ Parser/Scraper for WoW Add-On Data related to inventory management. Side project
 
 
 ## SET UP (including use in google sheets
-*Requires Bagnon and Auctioneer to be installed*
+*Requires Bagnon and Auctioneer to be installed.
 *Will only profile inventory and price data that has been seen post-installation*
 
 ### Set up GBank Data Directory
